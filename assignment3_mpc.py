@@ -7,10 +7,10 @@ class MPCDesign:
         #Student section-----------------------------------------------------------------------------------------
         #Assign self.N_p to Np, create zero matrices using n, m, p variables
         #Example: a zero matrix of x,y is np.zeros([x, y])
-        self.N_p = 0 #replace '0'
-        self.F = 0 #replace '0'
-        self.G = 0 #replace '0'
-        self.H = 0 #replace '0'
+        self.N_p = Np
+        self.F = np.zeros([p, n])
+        self.G = np.zeros([p, m])
+        self.H = np.zeros([m, m])
         #End student section-------------------------------------------------------------------------------------
         
 class eMPC(MPCDesign):
@@ -30,9 +30,9 @@ class eMPC(MPCDesign):
     
     def calculateGain(self, Q, R):
         #Student section-----------------------------------------------------------------------------------------
-        self.H = 0 #replace '0' , use X.transpose() to transpose a matrix X
-        self.Hinv = 0 #replace '0'
-        self.K_eMPC = 0 #replace '0', what is the formula for the optimal gain?
+        self.H = self.G.traspose() @ Q @ self.G + R
+        self.Hinv = linalg.inv(self.H)
+        self.K_eMPC = self.Hinv @ self.G.traspose() @ Q
         #End student section-------------------------------------------------------------------------------------
     
     def setConstraints(self,M_con,g_con):
@@ -47,9 +47,9 @@ class eMPC(MPCDesign):
         result = True
         #Student section-----------------------------------------------------------------------------------------
         LHS = M @ U
-        for i in range (0): #replace '0', how much should i iterate, hint: length of vector is len(vector)
-            if (True): #replace, what should the condition be - to find out if constraint is not satisfied
-                result = 0 #replace with.......
+        for i in range (len(g)): #how much should i iterate, hint: length of vector is len(vector)
+            if (LHS[i] >= g[i]): #what should the condition be - to find out if constraint is not satisfied
+                result = False
                 break
         return result
         #End student section-------------------------------------------------------------------------------------

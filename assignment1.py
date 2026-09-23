@@ -42,19 +42,19 @@ def generateTrajectory(lat0_target, lon0_target, alt0, psi):
         #Student Section-------------------------------------------------------------------------------------------
         
         #Update timestep (see assignment1.png)
-        x = x + dT*(0) #replace '0', hint use math.sin/math.cos
-        y = y + dT*(0) #replace '0'
+        x = x + dT*(speed*np.cos(psi)*np.cos(theta)) #N
+        y = y + dT*(speed*np.sin(psi)*np.cos(theta)) #E
         
-        xtrue.append(0) #replace
-        ytrue.append(0) #replace
+        xtrue.append(x)
+        ytrue.append(y)
         
         #Convert to LLA (call the appropriate function from 'conversions')
-        P_LLA = 0 #replace '0'
-        lat_values.append(0) #replace '0'
-        lon_values.append(0) #replace '0'
+        P_LLA = ned2lla(x, y, D, lat0_target, lon0_target, alt0)
+        lat_values.append(P_LLA[0])
+        lon_values.append(P_LLA[1])
         
         #Convert back to NED for comparison (Call the appropriate function from 'conversions')
-        P_NED = 0 #replace
+        P_NED = lla2ned(P_LLA[0], P_LLA[1], P_LLA[2], lat0_target, lon0_target, alt0)
         
         #End Student Section---------------------------------------------------------------------------------------
         

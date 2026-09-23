@@ -32,13 +32,13 @@ class PQP(QuadProg):
 
     def Optimize(self):
         #Student section - Use Algorithm 5 in previous lecture, to complete--------------------------------------
-        while False: #update this condition (hint: latest err)
+        while (self.err[self.i_t] >= 1e-6):
             old = copy.deepcopy(self.lam)
-            for i in range(0): #update this condition
-                Km = 0 #replace with Wm x lam (use @ to multiply)
-                Kp = 0 #replace with Wp x lam (use @ to multiply)  
+            for i in range(self.r):
+                Km = self.Wm @ self.lam
+                Kp = self.Wp @ self.lam 
                 self.lam[i] = self.lam[i]*((self.Zm[i]+Km[i])/(self.Zp[i]+Kp[i]))
             err = np.dot((self.lam-old).T,(self.lam-old)) 
-            self.i_t = 0 #increment self.i_t by 1
+            self.i_t += 1
             self.err = np.append(self.err,err) 
         #End student section---------------------------------------------------------------------------------------

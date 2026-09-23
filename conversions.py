@@ -30,10 +30,10 @@ def lla2ned(latrad, lonrad, alt, lat0_target, lon0_target, alt0):
     
     #Student Section, Complete RN_init, RM_init, dN_init, dE_init-----------------------------------------------------------------------
     
-    RN_init = 0 #Replace '0'
-    RM_init = 0 #Replace '0'
-    dN_init = 0 #Replace '0'
-    dE_init = 0 #Replace '0'
+    RN_init = a/np.sqrt(1-(2*f-f**2)*(np.sin(lat0))**2)
+    RM_init = RN_init*((1-(2*f-f**2))/(1-(2*f-f**2)*((np.sin(lat0))**2)))
+    dN_init = (lat-lat0)/np.arctan(1/RM_init)
+    dE_init = (lon-lon0)/np.arctan(1/(RN_init*np.cos(lat0)))
     N = dN_init
     E = dE_init
     D = alt0-alt

@@ -85,13 +85,13 @@ if __name__ == '__main__':
     #Student Section--------------------------------------------------------------------------------
 
     #Constraints
-    Mconstraints = 0 #complete
-    gconstraints = 0 #complete
+    Mconstraints = np.array([[1,0],[-1,0],[0,1],[0,-1]])
+    gconstraints = np.array([1, 0, 0.4363, 0.4363])
     #call controller set constraints method and pass M, g appropriately (uncommand / fix next line)
-    #controller..
+    controller.setConstraints(Mconstraints, gconstraints)
 
     #calculate optimal feedback gain (uncomment / fix next line) - pass in appropriate arguments
-    #controller...
+    controller.calculateGain(system.Q, system.R)
 
     #End student section-----------------------------------------------------------------------------
     
@@ -145,7 +145,7 @@ if __name__ == '__main__':
         #Get constrained input if unconstrained is not satisfactory
         if not controller.constraintsSatisfied(system.U, controller.M_con, controller.g_con):
             system.f = -controller.G.transpose() @ system.Q @ system.E
-            qp = 0 #update (initialize PQP class - pass in correct arguments - hint, look at the constructor)
+            qp = PQP(controller.M_con, controller.Hinv, controller.g_con, system.f) # (initialize PQP class - pass in correct arguments - hint, look at the constructor)
             qp.Optimize()
             #Find constrained input
             system.U = -controller.Hinv @ (system.f + 0.5*controller.M_con.transpose() @ qp.lam)
